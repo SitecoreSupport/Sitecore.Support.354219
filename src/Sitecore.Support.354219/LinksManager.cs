@@ -57,7 +57,15 @@
 
             if ((_linkType & LinkTypes.Href) == LinkTypes.Href)
             {
-                Html = HrefRegex.Value.Replace(Html, match => ChangeHrefLink(match, func));
+                var index = 0;
+                if ((index = Html.IndexOf("<body>", StringComparison.OrdinalIgnoreCase)) == -1)
+                {
+                    Html = HrefRegex.Value.Replace(Html, match => ChangeHrefLink(match, func));
+                }
+                else
+                {
+                    Html = Html.Substring(0, index) + HrefRegex.Value.Replace(Html.Substring(index), match => ChangeHrefLink(match, func));
+                }
             }
             if ((_linkType & LinkTypes.Src) == LinkTypes.Src)
             {
